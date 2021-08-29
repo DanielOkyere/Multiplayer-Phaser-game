@@ -1,4 +1,5 @@
-import {KeyboardControl} from '../../controls/keyboard.class'
+import { KeyboardControl } from '../../controls/keyboard.class'
+
 
 export class Player{
     public player: Phaser.Sprite;
@@ -17,20 +18,20 @@ export class Player{
         this.player.id = '1';
         this.player.anchor.setTo(0.5, 0.5);
         this.player.animations.add('accelerating', [1, 0], 60, false);
-        this.player.name = 'your name';
+        this.player.name = 'Your name';
         this.attachPhysics(gameInstance);
         
     }
-    public assignPickup(game, player?): void{
-        this.projectile = new Projectile(game, player.player);
-        this.playerState.set('ammo', this.projectile.bulletCount);
-    }
+    // public assignPickup(game, player?): void{
+    //     this.projectile = new Projectile(game, player.player);
+    //     this.playerState.set('ammo', this.projectile.bulletCount);
+    // }
     public view(): void{
         this.controls.update();
         
     }
     private addControls(): void{
-        this.controls = new KeyBoardControl(this.gameInstance, this);
+        this.controls = new KeyboardControl(this.gameInstance, this);
 
     }
 
