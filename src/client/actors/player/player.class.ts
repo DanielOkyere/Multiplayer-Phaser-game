@@ -1,3 +1,5 @@
+import {KeyboardControl} from '../../controls/keyboard.class'
+
 export class Player{
     public player: Phaser.Sprite;
     public controls: KeyboardControl;
