@@ -1,4 +1,6 @@
 import { KeyboardControl } from '../../controls/keyboard.class'
+import { Hud } from '../../hud/hud.class';
+import { Projectile } from '../../props/powers/projectile/projectile.class';
 
 
 export class Player{
@@ -6,6 +8,9 @@ export class Player{
     public controls: KeyboardControl;
     public playerState: Map<string, boolean | number>;
     public angularVelocity: number = 300;
+
+    public hud: Hud;
+    public projectile: Projectile;
 
     constructor(private gameInstance: Phaser.Game, public playerInstance: any) {
         this.createPlayer(this.gameInstance);
@@ -20,14 +25,20 @@ export class Player{
         this.player.animations.add('accelerating', [1, 0], 60, false);
         this.player.name = 'Your name';
         this.attachPhysics(gameInstance);
+        this.hud = new Hud();
+        this.hud.setName(gameInstance, this.player);
         
     }
-    // public assignPickup(game, player?): void{
-    //     this.projectile = new Projectile(game, player.player);
-    //     this.playerState.set('ammo', this.projectile.bulletCount);
-    // }
+    public assignPickup(game: Phaser.Game, player?: { player: any; }): void{
+        this.projectile = new Projectile(game, player.player);
+        this.playerState.set('ammo', this.projectile.bulletCount);
+        this.hud.setAmmo(game, player.player, this.projectile);
+    }
     public view(): void{
         this.controls.update();
+        if (this.projectile) {
+            this.hud.update(this.playerState.get('ammo'));
+        }
         
     }
     private addControls(): void{

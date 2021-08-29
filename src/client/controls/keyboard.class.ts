@@ -4,9 +4,10 @@ import { Controls } from "./keyboard.model";
 export class KeyboardControl {
     public gameControls: Controls;
     constructor(private gameInstance: any, private playerInstance: Player) {
+        const space = Phaser.KeyCode.SPACEBAR;
         this.gameControls = {
             cursors: this.gameInstance.input.keyboard.createCursorKeys(),
-            fireWeapon: this.gameInstance.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR)
+            fireWeapon: this.gameInstance.input.keyboard.addKey(space)
         }
     }
     public update(): void {
@@ -29,6 +30,15 @@ export class KeyboardControl {
                 this.playerInstance.player.body.angularVelocity = vel;
             } else {
                 this.playerInstance.player.body.angularVelocity = 0;
+            }
+            if (this.gameControls.fireWeapon.isDown) {
+                if (this.playerInstance.projectile) {
+                    this.playerInstance.projectile.fireWeapon();
+                    this.playerInstance.playerState.set('fire', true);
+                    this.playerInstance.playerState.set('ammo',this.playerInstance.projectile.bulletCount)
+                } else {
+                    this.playerInstance.playerState.set('fire', false);
+                }
             }
         }
     }
